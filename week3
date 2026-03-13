@@ -1,0 +1,290 @@
+# SOC Operations Lab – CYART VAPT Team
+
+## Objective
+
+Perform Security Operations Center (SOC) activities including log analysis, threat intelligence integration, incident escalation, alert triage, evidence collection, and full incident response workflow simulation.
+
+---
+
+# Advanced Log Analysis
+
+## Objective
+
+Analyze security logs, correlate events, detect anomalies, and enrich log data.
+
+## Workflow
+
+### Step 1: Setup Log Monitoring Environment
+
+* Install and configure Elastic Security / Security Onion
+* Import sample logs dataset
+* Verify logs are visible in the dashboard
+
+### Step 2: Log Correlation
+
+Filter failed login events.
+
+Command:
+
+```
+event.code:4625
+```
+
+Analyze related outbound network traffic from the same source IP.
+
+### Step 3: Detect Anomalies
+
+Create detection rule to identify high volume data transfers.
+
+Rule Condition:
+
+```
+bytes_out > 1000000
+```
+
+Monitor alerts triggered by abnormal traffic.
+
+### Step 4: Log Enrichment
+
+* Enable GeoIP plugin in Elastic
+* Add geographic information to IP addresses
+* Review enriched logs for suspicious locations
+
+---
+
+# Threat Intelligence Integration
+
+## Objective
+
+Integrate external threat intelligence feeds to enrich alerts and improve threat detection.
+
+## Workflow
+
+### Step 1: Configure Threat Intelligence
+
+* Access Wazuh dashboard
+* Integrate AlienVault OTX API
+* Import IOC feeds
+
+### Step 2: IOC Matching
+
+* Monitor network logs
+* Detect IPs matching threat intelligence indicators
+
+### Step 3: Alert Enrichment
+
+Enrich alerts with threat intelligence data.
+
+Example:
+
+| Alert ID | IP            | Reputation | Notes                     |
+| -------- | ------------- | ---------- | ------------------------- |
+| 003      | 192.168.1.100 | Malicious  | Possible C2 communication |
+
+### Step 4: Threat Hunting
+
+Search logs for suspicious account usage.
+
+Query:
+
+```
+user.name != "system"
+```
+
+Investigate abnormal login patterns.
+
+---
+
+# Incident Escalation Workflow
+
+## Objective
+
+Simulate SOC incident escalation using case management tools.
+
+## Workflow
+
+### Step 1: Create Incident Case
+
+* Open TheHive dashboard
+* Create new case
+* Assign severity level: High
+
+### Step 2: Add Indicators
+
+* Source IP
+* Detection time
+* MITRE technique
+
+Example:
+T1078 – Valid Accounts
+
+### Step 3: Escalate Incident
+
+* Assign case to Tier 2 analyst
+* Add investigation notes
+* Document response actions
+
+### Step 4: Prepare SITREP
+
+Include:
+
+* Incident title
+* Detection time
+* Affected system
+* Response actions
+
+---
+
+# Alert Triage with Threat Intelligence
+
+## Objective
+
+Analyze security alerts and validate indicators using threat intelligence platforms.
+
+## Workflow
+
+### Step 1: Analyze Alert in Wazuh
+
+Example alert:
+
+| Alert ID | Description                     | Source IP     | Priority | Status |
+| -------- | ------------------------------- | ------------- | -------- | ------ |
+| 004      | Suspicious PowerShell Execution | 192.168.1.101 | High     | Open   |
+
+### Step 2: Extract IOC
+
+Identify IP address or file hash from alert.
+
+### Step 3: Validate IOC
+
+Search indicator in:
+
+* VirusTotal
+* AlienVault OTX
+
+### Step 4: Determine Alert Validity
+
+Classify alert as:
+
+* True Positive
+* False Positive
+* Suspicious Activity
+
+---
+
+# Evidence Preservation and Analysis
+
+## Objective
+
+Collect and preserve digital evidence while maintaining forensic integrity.
+
+## Workflow
+
+### Step 1: Collect Volatile Data
+
+Use Velociraptor to collect network connections.
+
+Query:
+
+```
+SELECT * FROM netstat
+```
+
+Export results to CSV.
+
+### Step 2: Memory Acquisition
+
+Run artifact:
+
+```
+Artifact.Windows.Memory.Acquisition
+```
+
+Download memory dump for analysis.
+
+### Step 3: Generate Evidence Hash
+
+Command:
+
+```
+sha256sum memory_dump.raw
+```
+
+### Evidence Chain of Custody
+
+| Item        | Description     | Collected By | Date       | Hash        |
+| ----------- | --------------- | ------------ | ---------- | ----------- |
+| Memory Dump | Server-Y Memory | SOC Analyst  | 2025-08-18 | SHA256_HASH |
+
+---
+
+# Full SOC Workflow Simulation
+
+## Objective
+
+Simulate a real cyberattack and demonstrate the SOC detection and response process.
+
+## Workflow
+
+### Step 1: Simulate Attack
+
+Use Metasploit to exploit Metasploitable2.
+
+Commands:
+
+```
+msfconsole
+search samba
+use exploit/multi/samba/usermap_script
+set RHOST 192.168.1.101
+run
+```
+
+### Step 2: Detection
+
+Wazuh generates alert.
+
+Example:
+
+| Timestamp | Source IP     | Alert                  | MITRE Technique |
+| --------- | ------------- | ---------------------- | --------------- |
+| 14:00     | 192.168.1.101 | Samba exploit detected | T1210           |
+
+### Step 3: Containment
+
+* Identify attacker IP
+* Block IP using CrowdSec
+* Verify network isolation
+
+### Step 4: Escalation
+
+* Create case in TheHive
+* Document investigation
+* Escalate to Tier 2 analyst
+
+### Step 5: Incident Report
+
+Prepare SOC report including:
+
+* Executive summary
+* Incident timeline
+* Recommendations
+
+---
+
+# Skills Demonstrated
+
+* Log Analysis
+* Threat Intelligence Integration
+* SOC Alert Investigation
+* Incident Escalation
+* Digital Forensics
+* Attack Detection and Containment
+* SOC Reporting
+
+---
+
+# Author
+
+POOJA GUPTA
+B.Tech CSIT – Cyber Security
